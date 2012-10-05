@@ -46,8 +46,7 @@ void ac_b_click()
 
 int eq_b_click()
 {
-	if (inp_step == 0)
-	{
+	if (inp_step == 0) {
 		return 0;
 	}
 	int result,
