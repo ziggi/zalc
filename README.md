@@ -1,4 +1,4 @@
 Zalc
 ====
 
-Simple calculator with fltk lib
+A small, FLTK-based calculator
