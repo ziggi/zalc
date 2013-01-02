@@ -10,9 +10,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Input.H>
-#include <config.h>
-
-#define APP_VERSION "1.1"
+#include "config.h"
 
 const int
 	window_height = 180,
@@ -30,8 +28,8 @@ const int
 	input_x = 20, input_y = 20,
 	input_height = 30;
 
-int inp_step = 0,
-	first_num = 0;
+int inp_step = 0, dotted = 0;
+long double first_num = 0;
 
 char calc_op[2] = {0};
 Fl_Input *input;
@@ -41,6 +39,7 @@ void ac_b_click()
 {
 	input->value("0");
 	inp_step = 0;
+	dotted = 0;
 	calc_op[0] = 0;
 }
 
@@ -49,9 +48,9 @@ int eq_b_click()
 	if (inp_step == 0) {
 		return 0;
 	}
-	int result,
-		other_div = 0,
-		second_num = atoi(input->value());
+	int other_div = 0;
+	long double result;
+	long double second_num = atof(input->value());
 	
 	switch (calc_op[0]) {
 		case '+': result = first_num + second_num; break;
@@ -71,7 +70,7 @@ int eq_b_click()
 	}
 	if (other_div == 0) {
 		char output[128];
-		sprintf(output, "%d", result);
+		sprintf(output, "%Lf", result);
 		input->value(output);
 	}
 	inp_step = 0;
@@ -98,18 +97,41 @@ void do_b_click(Fl_Button *button, void* = 0)
 	if (inp_step == 3) {
 		eq_b_click();
 	}
-	first_num = atoi(input->value());
+	first_num = atof(input->value());
 	calc_op[0] = (char)*button->label();
 	inp_step = 2;
+	dotted = 0;
+}
+
+void dot_b_click(Fl_Button *button, void* = 0)
+{
+	if (inp_step == 0 || inp_step == 2) {
+		input->value("0.");
+		dotted = 1;
+		inp_step = 1;
+		return;
+	}
+	if (dotted != 1) {
+		dotted = 1;
+		char str[128] = {0};
+		strcat(str, input->value());
+		strcat(str, ".");
+		input->value(str);
+	}
 }
 
 int main(int argc, char **argv)
 {
 	Fl_Window *window = new Fl_Window(window_width, window_height);
-	window->label("Zalc v"APP_VERSION);
+	window->label("Zalc v"PACKAGE_VERSION);
 	
 	int button_x = b_x,
 		button_y = b_y;
+	
+	// create dot button
+	Fl_Button *button_dot = new Fl_Button(button_x + b_num_width + b_padding, button_y, b_num_width, b_num_height, ".");
+	button_dot->callback((Fl_Callback*)dot_b_click);
+	button_dot->box(FL_GTK_UP_BOX);
 	
 	// create digit button
 	Fl_Button *num_b[10];
@@ -127,9 +149,9 @@ int main(int argc, char **argv)
 		num_b[i] = new Fl_Button(button_x, button_y, b_num_width, b_num_height);
 		num_b[i]->callback((Fl_Callback*)num_b_click);
 		num_b[i]->box(FL_GTK_UP_BOX);
-		/*
+		
 		// does not work on fltk 1.3
-		sprintf(buffer, "%d", i);
+		/*sprintf(buffer, "%d", j);
 		num_b[i]->label(buffer);*/
 	}
 	num_b[0]->label("0");
@@ -158,7 +180,6 @@ int main(int argc, char **argv)
 	do_b[1]->label("-");
 	do_b[2]->label("*");
 	do_b[3]->label("/");
-	
 	
 	// create ac button
 	button_x += b_padding + b_num_width;
