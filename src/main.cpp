@@ -69,9 +69,22 @@ int eq_b_click()
 			break;
 	}
 	if (other_div == 0) {
-		char output[128];
-		sprintf(output, "%Lf", result);
-		input->value(output);
+		char bufer[128], output[128];
+		
+		sprintf(bufer, "%Lf", result);
+		
+		// removing extra zeros
+		long int second_part = atoi(strstr(bufer, ".") + 1);
+		if (second_part == 0) {
+			sprintf(bufer, "%Ld", (long long int)result);
+		} else {
+			while (second_part % 10 == 0) {
+				second_part /= 10;
+			}
+			sprintf(bufer, "%Ld.%ld", (long long int)result, second_part);
+		}
+		
+		input->value(bufer);
 	}
 	inp_step = 0;
 	first_num = 0;
