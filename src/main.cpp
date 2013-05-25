@@ -67,6 +67,8 @@ int eq_b_click()
 				result = first_num / second_num;
 			}
 			break;
+		default:
+			return 0;
 	}
 	if (other_div == 0) {
 		char bufer[128], output[128];
