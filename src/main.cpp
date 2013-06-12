@@ -72,19 +72,17 @@ int eq_b_click()
 			return 0;
 	}
 	if (other_div == 0) {
-		char bufer[128], output[128];
+		char bufer[128];
 		
-		sprintf(bufer, "%.12Lf", result);
+		sprintf(bufer, "%.12Lf", (long double)result);
 		
 		// removing extra zeros
-		long long int second_part = atoll(strstr(bufer, ".") + 1);
-		if (second_part == 0) {
-			sprintf(bufer, "%Ld", (long long int)result);
-		} else {
-			while (second_part % 10 == 0) {
-				second_part /= 10;
-			}
-			sprintf(bufer, "%Ld.%Ld", (long long int)result, second_part);
+		int i;
+		for (i = strlen(bufer) - 1; i > 0 && bufer[i] == '0'; i--) {
+			bufer[i] = '\0';
+		}
+		if (bufer[i] == '.') {
+			bufer[i] = '\0';
 		}
 		
 		input->value(bufer);
