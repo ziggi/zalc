@@ -1,6 +1,6 @@
 # ======================== initialization ===============================
 AC_INIT([Zalc],
-        [1.2.2],
+        [1.2.3],
         [xziggix@gmail.com],
         [zalc])
 

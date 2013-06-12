@@ -11,6 +11,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Input.H>
 #include "config.h"
+#include "string"
 
 const int
 	window_height = 180,
@@ -73,17 +74,17 @@ int eq_b_click()
 	if (other_div == 0) {
 		char bufer[128], output[128];
 		
-		sprintf(bufer, "%Lf", result);
+		sprintf(bufer, "%.12Lf", result);
 		
 		// removing extra zeros
-		long int second_part = atoi(strstr(bufer, ".") + 1);
+		long long int second_part = atoll(strstr(bufer, ".") + 1);
 		if (second_part == 0) {
 			sprintf(bufer, "%Ld", (long long int)result);
 		} else {
 			while (second_part % 10 == 0) {
 				second_part /= 10;
 			}
-			sprintf(bufer, "%Ld.%ld", (long long int)result, second_part);
+			sprintf(bufer, "%Ld.%Ld", (long long int)result, second_part);
 		}
 		
 		input->value(bufer);
@@ -150,7 +151,7 @@ int main(int argc, char **argv)
 	
 	// create digit button
 	Fl_Button *num_b[10];
-	//char buffer[20];
+	char labels[10][2] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 	for (int i = 0, k = 0; i < 10; i++) {
 		if (i > 1) {
 			button_x += b_padding + b_num_width;
@@ -160,25 +161,11 @@ int main(int argc, char **argv)
 			button_y -= b_num_height + b_padding;
 			button_x = b_x;
 		}
-		
-		num_b[i] = new Fl_Button(button_x, button_y, b_num_width, b_num_height);
+
+		num_b[i] = new Fl_Button(button_x, button_y, b_num_width, b_num_height, labels[i]);
 		num_b[i]->callback((Fl_Callback*)num_b_click);
 		num_b[i]->box(FL_GTK_UP_BOX);
-		
-		// does not work on fltk 1.3
-		/*sprintf(buffer, "%d", j);
-		num_b[i]->label(buffer);*/
 	}
-	num_b[0]->label("0");
-	num_b[1]->label("1");
-	num_b[2]->label("2");
-	num_b[3]->label("3");
-	num_b[4]->label("4");
-	num_b[5]->label("5");
-	num_b[6]->label("6");
-	num_b[7]->label("7");
-	num_b[8]->label("8");
-	num_b[9]->label("9");
 	
 	// create doing button
 	Fl_Button *do_b[4];
