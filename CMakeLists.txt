@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(zalc)
-set(PACKAGE_VERSION "1.2.4")
+set(PACKAGE_VERSION "1.2.5")
 
 if(MSVC)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
