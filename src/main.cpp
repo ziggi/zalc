@@ -10,8 +10,6 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Input.H>
-#include "config.h"
-#include "string"
 
 const int
 	window_height = 180,
@@ -137,7 +135,7 @@ void dot_b_click(Fl_Button *button, void* = 0)
 int main(int argc, char **argv)
 {
 	Fl_Window *window = new Fl_Window(window_width, window_height);
-	window->label("Zalc v"PACKAGE_VERSION);
+	window->label("Zalc v" PACKAGE_VERSION);
 	
 	int button_x = b_x,
 		button_y = b_y;
